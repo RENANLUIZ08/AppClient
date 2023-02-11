@@ -15,6 +15,7 @@ namespace AppClient.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCors();
             services.AddDataBaseConfig(Configuration);
             services.AddDependencyInjectionConfig();
             services.AddSwaggerConfig();
@@ -35,6 +36,13 @@ namespace AppClient.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(access =>
+                access.
+                AllowAnyHeader().
+                AllowAnyMethod().
+                AllowAnyOrigin()
+            );
 
             app.UseEndpoints(endpoints =>
             {
