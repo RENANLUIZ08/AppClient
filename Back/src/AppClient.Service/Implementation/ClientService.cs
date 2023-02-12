@@ -29,10 +29,10 @@ namespace AppClient.Service.Service.Implementations
             return _mapper.Map<ClientDto>(result);
         }
 
-        public ClientDto Update(ClientDto dto)
+        public ClientDto Update(int id, ClientDto dto)
         {
-            var entity = _repository.GetByWhere((q) => q.Id == dto.Id)?.FirstOrDefault();
-            if(entity == null) 
+            var entity = _repository.GetByWhere((q) => q.Id == id)?.FirstOrDefault();
+            if (entity == null)
             { throw new NullReferenceException("Cliente não localizado para atualização."); }
 
             _mapper.Map(dto, entity);
@@ -58,7 +58,7 @@ namespace AppClient.Service.Service.Implementations
         public ClientDto GetById(int id)
         {
             var getClient = _repository.GetByWhere((q) => q.Id == id)?.FirstOrDefault();
-            if(getClient == null) 
+            if (getClient == null)
             { throw new NullReferenceException("Cliente não encontrado."); }
 
             return _mapper.Map<ClientDto>(getClient);
@@ -68,8 +68,8 @@ namespace AppClient.Service.Service.Implementations
         {
             var getClients = _repository.GetByWhere();
 
-            if (getClients.Count == 0)
-            { throw new NullReferenceException("Nenhum cliente foi localizado."); }
+            // if (getClients.Count == 0)
+            // { throw new NullReferenceException("Nenhum cliente foi localizado."); }
 
             return _mapper.Map<List<ClientDto>>(getClients);
         }

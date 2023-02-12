@@ -1,0 +1,72 @@
+<div class="row">
+  <div [ngClass]="{ 'col-md-8 pr-0': edit, 'col-md-12': !edit }">
+    <div class="card rounded shadow-sm">
+      <form *ngIf="form" [formGroup]="form">
+        <div class="p-3">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label>Nome</label>
+              <input
+                type="text"
+                class="form-control"
+                [ngClass]="cssValidator(f.name)"
+                formControlName="name"
+                placeholder="Insira o Nome"
+                [(ngModel)]="client.name"
+              />
+              <div *ngIf="f.name.errors?.required" class="invalid-feedback">
+                Nome é obrigatório.
+              </div>
+              <div *ngIf="f.name.errors?.minlength" class="invalid-feedback">
+                Nome deve ter no mínimo 4 caracteres.
+              </div>
+              <div *ngIf="f.name.errors?.maxlength" class="invalid-feedback">
+                Nome deve ter no máximo 20 caracteres.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label>Endereço</label>
+              <input
+                type="text"
+                class="form-control"
+                [ngClass]="cssValidator(f.address)"
+                formControlName="address"
+                placeholder="Insira o Endereço"
+                [(ngModel)]="client.address"
+              />
+              <div *ngIf="f.address.errors?.required" class="invalid-feedback">
+                Endereço é obrigatório.
+              </div>
+              <div *ngIf="f.address.errors?.minlength" class="invalid-feedback">
+                Endereço deve ter no mínimo 10 caracteres.
+              </div>
+              <div *ngIf="f.address.errors?.maxlength" class="invalid-feedback">
+                Endereço deve ter no máximo 60 caracteres.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex">
+            <button
+              class="btn btn-outline-secondary mr-auto border"
+              (click)="resetForm()"
+            >
+              Cancelar Alteração
+            </button>
+            <button
+              class="btn btn-success"
+              [disabled]="!form.valid"
+              (click)="saveClient()"
+            >
+              <!-- <span class="spinner-border spinner-border-sm mr-1"></span> -->
+              Salvar Evento
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

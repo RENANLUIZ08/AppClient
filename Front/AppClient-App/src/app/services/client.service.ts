@@ -17,4 +17,19 @@ export class ClientService {
   public getClientById(id: number): Observable<Client> {
     return this.http.get<Client>(`${this.baseURL}/Get?id=${id}`);
   }
+
+  public createClient(client: Client): Observable<Client> {
+    return this.http.post<Client>(`${this.baseURL}/create`, client);
+  }
+
+  public updateClient(client: Client): Observable<Client> {
+    return this.http.put<Client>(
+      `${this.baseURL}/update?id=${client.id}`,
+      client
+    );
+  }
+
+  public deleteClient(id: number): Observable<any> {
+    return this.http.delete(`${this.baseURL}/delete?id=${id}`);
+  }
 }

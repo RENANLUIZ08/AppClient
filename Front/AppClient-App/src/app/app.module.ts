@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -13,13 +13,22 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ClientsComponent } from './components/clients/clients.component';
-import { NavComponent } from './nav/nav.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TitleComponent } from './shared/title/title.component';
+import { NavComponent } from './shared/nav/nav.component';
+import { ClientDetailsComponent } from './components/clients/client-details/client-details.component';
+import { ClientListComponent } from './components/clients/client-list/client-list.component';
 
 @NgModule({
-  declarations: [AppComponent, ClientsComponent, NavComponent, TitleComponent],
+  declarations: [
+    AppComponent,
+    ClientsComponent,
+    NavComponent,
+    TitleComponent,
+    ClientDetailsComponent,
+    ClientListComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -27,6 +36,7 @@ import { TitleComponent } from './shared/title/title.component';
     NgbModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     CollapseModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
