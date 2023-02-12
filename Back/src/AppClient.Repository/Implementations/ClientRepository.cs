@@ -1,6 +1,5 @@
 ﻿using AppClient.Domain.Entities;
-using AppClient.Domain.Repository.Interface;
-using AppClient.Repository.Implementations;
+using AppClient.Repository.Interface;
 
 namespace AppClient.Repository.Implementations
 {

@@ -9,6 +9,7 @@ export class TitleComponent implements OnInit {
   @Input() title?: string;
   @Input() iconName: string = 'fa fa-user';
   @Input() subtitle?: string;
+  @Input() showList?: boolean = true;
 
   listar(): void {
     this.router.navigate([`/${this.title?.toLocaleLowerCase()}/list`]);

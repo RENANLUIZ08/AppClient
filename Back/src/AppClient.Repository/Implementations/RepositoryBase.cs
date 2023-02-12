@@ -1,4 +1,5 @@
-﻿using AppClient.Domain.Interfaces;
+﻿using AppClient.Repository.Interfaces;
+using AppClient.Repository.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -27,7 +28,14 @@ namespace AppClient.Repository.Implementations
         public bool SaveChanges()
         => _context.SaveChanges() > 0;
 
-        public List<TEntity> GetByWhere(Expression<Func<TEntity, bool>>? where = null)
-        => where == null? DbSet.ToList() : DbSet.Where(where).ToList();        
+        public async Task<PageList<TEntity>> GetByWhere(PageParams pageParams)
+         => await PageList<TEntity>.CreateAsync(
+            DbSet.AsQueryable(),
+            pageParams.PageNumber,
+            pageParams.PageSize
+            );
+
+        public TEntity GetById(int id)
+         => DbSet.Find(id);
     }
 }

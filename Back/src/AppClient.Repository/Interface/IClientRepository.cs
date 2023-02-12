@@ -1,7 +1,7 @@
 ﻿using AppClient.Domain.Entities;
-using AppClient.Domain.Interfaces;
+using AppClient.Repository.Interfaces;
 
-namespace AppClient.Domain.Repository.Interface
+namespace AppClient.Repository.Interface
 {
     public interface IClientRepository : IRepositoryBase<Client>
     {

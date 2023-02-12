@@ -1,7 +1,8 @@
 ﻿using AppClient.Domain.DTO;
 using AppClient.Domain.Entities;
-using AppClient.Domain.Repository.Interface;
 using AppClient.Repository.Implementations;
+using AppClient.Repository.Interface;
+using AppClient.Repository.Models;
 using AppClient.Service.Service.Implementations;
 using AppClient.Service.Service.Interfaces;
 using AutoMapper;

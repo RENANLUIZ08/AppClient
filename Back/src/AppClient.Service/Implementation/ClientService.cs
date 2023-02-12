@@ -1,6 +1,7 @@
 ﻿using AppClient.Domain.DTO;
 using AppClient.Domain.Entities;
-using AppClient.Domain.Repository.Interface;
+using AppClient.Repository.Interface;
+using AppClient.Repository.Models;
 using AppClient.Service.Implementations;
 using AppClient.Service.Service.Interfaces;
 using AutoMapper;
@@ -31,7 +32,7 @@ namespace AppClient.Service.Service.Implementations
 
         public ClientDto Update(int id, ClientDto dto)
         {
-            var entity = _repository.GetByWhere((q) => q.Id == id)?.FirstOrDefault();
+            var entity = _repository.GetById(id);
             if (entity == null)
             { throw new NullReferenceException("Cliente não localizado para atualização."); }
 
@@ -46,7 +47,7 @@ namespace AppClient.Service.Service.Implementations
 
         public void Delete(int id)
         {
-            var getClient = _repository.GetByWhere((q) => q.Id == id)?.FirstOrDefault();
+            var getClient = _repository.GetById(id);
             if (getClient == null)
             { throw new NullReferenceException("Cliente não encontrado para exclusão."); }
 
@@ -57,21 +58,27 @@ namespace AppClient.Service.Service.Implementations
 
         public ClientDto GetById(int id)
         {
-            var getClient = _repository.GetByWhere((q) => q.Id == id)?.FirstOrDefault();
+            var getClient = _repository.GetById(id);
             if (getClient == null)
             { throw new NullReferenceException("Cliente não encontrado."); }
 
             return _mapper.Map<ClientDto>(getClient);
         }
 
-        public List<ClientDto> GetAll()
+        public async Task<PageList<ClientDto>> GetAll(PageParams pageParams)
         {
-            var getClients = _repository.GetByWhere();
+            var getClients = await _repository.GetByWhere(pageParams);
 
             // if (getClients.Count == 0)
             // { throw new NullReferenceException("Nenhum cliente foi localizado."); }
 
-            return _mapper.Map<List<ClientDto>>(getClients);
+            var getResult = _mapper.Map<PageList<ClientDto>>(getClients);
+            getResult.CurrentPage = getClients.CurrentPage;
+            getResult.TotalPages = getClients.TotalPages;
+            getResult.PageSize = getClients.PageSize;
+            getResult.TotalCount = getClients.TotalCount;
+
+            return getResult;
         }
     }
 }

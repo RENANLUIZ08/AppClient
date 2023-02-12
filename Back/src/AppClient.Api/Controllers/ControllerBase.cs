@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AppClient.Repository.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AppClient.Api.Controllers
 {
@@ -8,6 +9,6 @@ namespace AppClient.Api.Controllers
         public abstract IActionResult Create([FromBody] TEntity entity);
         public abstract IActionResult Update(int id, [FromBody] TEntity entity);
         public abstract IActionResult Delete(int id);
-        public abstract IActionResult GetAll();
+        public abstract Task<IActionResult> GetAll(PageParams pageParams);
     }
 }

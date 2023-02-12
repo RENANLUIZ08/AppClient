@@ -1,4 +1,6 @@
-﻿namespace AppClient.Service.Repository.Interfaces
+﻿using AppClient.Repository.Models;
+
+namespace AppClient.Service.Repository.Interfaces
 {
     public interface IServiceBase<TDto> where TDto : class
     {
@@ -6,6 +8,6 @@
         TDto Update(int id, TDto dto);
         void Delete(int id);
         TDto GetById(int id);
-        List<TDto> GetAll();
+        Task<PageList<TDto>> GetAll(PageParams pageParams);
     }
 }

@@ -1,4 +1,6 @@
-﻿using AppClient.Domain.DTO;
+﻿using AppClient.Api.Extensions;
+using AppClient.Domain.DTO;
+using AppClient.Repository.Models;
 using AppClient.Service.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -122,11 +124,16 @@ namespace AppClient.Api.Controllers
         [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, description: "Verifique os dados enviados na requisicao e tente novamente.")]
         [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, description: "Não foram localizados dados com os as informacoes enviadas.")]
 
-        public override IActionResult GetAll()
+        public override async Task<IActionResult> GetAll([FromQuery] PageParams pageParams)
         {
             try
             {
-                return Ok(_clientService.GetAll());
+                var getClients = await _clientService.GetAll(pageParams);
+                if (getClients.Count == 0 || getClients == null)
+                { return NoContent(); }
+
+                Response.AddPagination(getClients.CurrentPage, getClients.PageSize, getClients.TotalCount, getClients.TotalPages);
+                return Ok(getClients);
             }
             catch (NullReferenceException ex)
             {

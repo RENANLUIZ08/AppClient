@@ -19,6 +19,7 @@ import { TitleComponent } from './shared/title/title.component';
 import { NavComponent } from './shared/nav/nav.component';
 import { ClientDetailsComponent } from './components/clients/client-details/client-details.component';
 import { ClientListComponent } from './components/clients/client-list/client-list.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ClientListComponent } from './components/clients/client-list/client-lis
     TitleComponent,
     ClientDetailsComponent,
     ClientListComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
