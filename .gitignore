@@ -443,7 +443,9 @@ $RECYCLE.BIN/
 # JetBrains Rider
 .idea/
 *.sln.iml
-
+/Back/src/AppClient.Api/*.db
+/Back/src/AppClient.Api/*.db-shm
+/Back/src/AppClient.Api/*.db-wal
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output

@@ -1,0 +1,53 @@
+<app-title [title]="'Lista de clientes'"></app-title>
+<div class="form-inline">
+  <div class="mb-2">
+    <input type="text" class="form-control mr-2" [(ngModel)]="filterList" />
+    <button class="btn btn-outline-success">Pesquisar</button>
+  </div>
+</div>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>#</th>
+      <th>Nome</th>
+      <th>Endereço</th>
+      <th>Opções</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="clients && clients.length">
+    <tr *ngFor="let client of clients">
+      <td>{{ client.id }}</td>
+      <td>{{ client.name }}</td>
+      <td>{{ client.address }}</td>
+      <td>
+        <button class="btn btn-outline-primary btn-sm mr-2" tooltip="Editar">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button
+          class="btn btn-outline-danger btn-sm"
+          tooltip="Excluir"
+          (click)="openModal(template)"
+        >
+          <i class="fa fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="!clients.length">
+    <tr>
+      <td colspan="#" class="text-center">Nenhum cliente encontrado.</td>
+    </tr>
+  </tfoot>
+</table>
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Deseja Excluir o Cliente?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()">
+      Sim
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      Não
+    </button>
+  </div>
+</ng-template>
