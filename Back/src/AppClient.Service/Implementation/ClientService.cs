@@ -1,4 +1,5 @@
-﻿using AppClient.Domain.DTO;
+﻿using System.Linq.Expressions;
+using AppClient.Domain.DTO;
 using AppClient.Domain.Entities;
 using AppClient.Repository.Interface;
 using AppClient.Repository.Models;
@@ -67,12 +68,19 @@ namespace AppClient.Service.Service.Implementations
 
         public async Task<PageList<ClientDto>> GetAll(PageParams pageParams)
         {
-            var getClients = await _repository.GetByWhere(pageParams);
+            Expression<Func<Client, bool>> expression =
+            !string.IsNullOrEmpty(pageParams?.Name) ?
+            (q) => q.Name.ToLower().StartsWith(pageParams.Name.ToLower()) :
+            null;
+
+            var getClients = await _repository.GetByWhere(pageParams, expression);
 
             // if (getClients.Count == 0)
             // { throw new NullReferenceException("Nenhum cliente foi localizado."); }
 
-            var getResult = _mapper.Map<PageList<ClientDto>>(getClients);
+            var getResult = _mapper.Map<PageList<ClientDto>>(
+                getClients
+            );
             getResult.CurrentPage = getClients.CurrentPage;
             getResult.TotalPages = getClients.TotalPages;
             getResult.PageSize = getClients.PageSize;

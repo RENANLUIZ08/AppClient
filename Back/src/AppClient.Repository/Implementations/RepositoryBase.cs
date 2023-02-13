@@ -17,7 +17,7 @@ namespace AppClient.Repository.Implementations
         }
 
         public TEntity InsertDb(TEntity entity)
-        => DbSet.Add(entity).Entity;        
+        => DbSet.Add(entity).Entity;
 
         public TEntity UpdateDb(TEntity entity)
         => DbSet.Update(entity).Entity;
@@ -28,9 +28,11 @@ namespace AppClient.Repository.Implementations
         public bool SaveChanges()
         => _context.SaveChanges() > 0;
 
-        public async Task<PageList<TEntity>> GetByWhere(PageParams pageParams)
+        public async Task<PageList<TEntity>> GetByWhere(PageParams pageParams, Expression<Func<TEntity, bool>>? where = null)
          => await PageList<TEntity>.CreateAsync(
-            DbSet.AsQueryable(),
+            where != null
+            ? DbSet.Where(where)
+            : DbSet.AsQueryable(),
             pageParams.PageNumber,
             pageParams.PageSize
             );

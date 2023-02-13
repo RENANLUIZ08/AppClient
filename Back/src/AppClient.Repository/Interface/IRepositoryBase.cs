@@ -8,7 +8,7 @@ namespace AppClient.Repository.Interfaces
         TEntity InsertDb(TEntity entity);
         TEntity UpdateDb(TEntity entity);
         TEntity DeleteDb(TEntity entity);
-        Task<PageList<TEntity>> GetByWhere(PageParams pageParams);
+        Task<PageList<TEntity>> GetByWhere(PageParams pageParams, Expression<Func<TEntity, bool>>? where = null);
         TEntity GetById(int id);
 
         bool SaveChanges();

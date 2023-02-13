@@ -1,9 +1,13 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { Client } from 'src/app/models/Client';
+import { Pagination, PaginationResult } from 'src/app/models/Pagination';
 import { ClientService } from 'src/app/services/client.service';
 
 @Component({
@@ -14,28 +18,10 @@ import { ClientService } from 'src/app/services/client.service';
 export class ClientListComponent implements OnInit {
   modalRef?: BsModalRef;
   public clients: Client[] = [];
-  private _filterList: string = '';
-  idClient?: number;
+  public idClient?: number;
+  public pagination = {} as Pagination;
 
-  public get filterList(): string {
-    return this._filterList;
-  }
-
-  public set filterList(value: string) {
-    this._filterList = value;
-    if (this._filterList) {
-      this.clients = this.filterClients(this._filterList);
-    } else {
-      this.getClients();
-    }
-  }
-
-  public filterClients(value: string): Client[] {
-    value = value.toLocaleLowerCase();
-    return this.clients.filter(
-      (client: Client) => client.name.toLocaleLowerCase().indexOf(value) !== -1
-    );
-  }
+  nameClientChange: Subject<string> = new Subject<string>();
 
   constructor(
     private clientService: ClientService,
@@ -46,7 +32,11 @@ export class ClientListComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.spinner.show();
+    this.pagination = {
+      currentPage: 1,
+      itemsPPage: 3,
+      totalItems: 1,
+    } as Pagination;
     this.getClients();
   }
 
@@ -54,15 +44,47 @@ export class ClientListComponent implements OnInit {
     this.router.navigate([`clients/details/${id}`]);
   }
 
+  public filterClients(evt: any): void {
+    if (!this.nameClientChange.observers.length) {
+      this.nameClientChange.pipe(debounceTime(800)).subscribe((filterDigit) => {
+        this.clientService
+          .getClients(
+            this.pagination.currentPage,
+            this.pagination.itemsPPage,
+            filterDigit
+          )
+          .subscribe({
+            next: (_resultPagination: PaginationResult<Client[]>) => {
+              this.clients = _resultPagination.result;
+              this.pagination = _resultPagination.pagination;
+            },
+            error: (error) => {
+              this.spinner.hide();
+              this.toastr.error('Erro ao carregar os clientes', 'Erro');
+            },
+            complete: () => this.spinner.hide(),
+          });
+      });
+    } else {
+      this.nameClientChange.next(evt.value);
+    }
+  }
+
   public getClients(): void {
-    this.clientService.getClients().subscribe({
-      next: (_clients: Client[]) => (this.clients = _clients),
-      error: (error) => {
-        this.spinner.hide();
-        this.toastr.error('Erro ao carregar os clientes', 'Erro');
-      },
-      complete: () => this.spinner.hide(),
-    });
+    this.spinner.show();
+    this.clientService
+      .getClients(this.pagination?.currentPage, this.pagination.itemsPPage)
+      .subscribe({
+        next: (_resultPagination: PaginationResult<Client[]>) => {
+          this.clients = _resultPagination.result;
+          this.pagination = _resultPagination.pagination;
+        },
+        error: (error) => {
+          this.spinner.hide();
+          this.toastr.error('Erro ao carregar os clientes', 'Erro');
+        },
+        complete: () => this.spinner.hide(),
+      });
   }
 
   openModal(event: any, template: TemplateRef<any>, id: number) {
@@ -99,5 +121,10 @@ export class ClientListComponent implements OnInit {
 
   decline(): void {
     this.modalRef?.hide();
+  }
+
+  pageChanged($event: any): void {
+    this.pagination.currentPage = $event.page;
+    this.getClients();
   }
 }

@@ -6,7 +6,7 @@
           placeholder="Digite para Buscar nome..."
           type="text"
           class="form-control mr-2"
-          [(ngModel)]="filterList"
+          (input)="filterClients($event.target)"
         />
       </div>
     </div>
@@ -67,3 +67,18 @@
     </button>
   </div>
 </ng-template>
+<div class="d-flex justify-content-center">
+  <pagination
+    [boundaryLinks]="true"
+    [totalItems]="pagination.totalItems.valueOf()"
+    [itemsPerPage]="pagination.itemsPPage.valueOf()"
+    [(ngModel)]="pagination.currentPage"
+    (pageChanged)="pageChanged($event)"
+    pageBtnClass="btn"
+    previousText="&lsaquo;"
+    nextText="&rsaquo;"
+    firstText="&laquo;"
+    lastText="&raquo;"
+  >
+  </pagination>
+</div>

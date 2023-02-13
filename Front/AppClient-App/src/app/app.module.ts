@@ -9,6 +9,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -48,6 +49,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
       preventDuplicates: true,
       progressBar: true,
     }),
+    PaginationModule.forRoot(),
     NgxSpinnerModule,
   ],
   providers: [],

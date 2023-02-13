@@ -11,7 +11,7 @@ namespace AppClient.Api.Extensions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
-            var pagination = new PaginationHeader(currentPage, itemsPPage, totalItems);
+            var pagination = new PaginationHeader(currentPage, itemsPPage, totalItems, totalPages);
             response.Headers.Add("Pagination", JsonSerializer.Serialize(pagination, opts));
             response.Headers.Add("Access-Control-Expose-Headers", "Pagination");
         }

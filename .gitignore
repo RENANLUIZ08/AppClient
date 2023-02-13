@@ -526,3 +526,4 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+Back/src/AppClient.Api/AppClient.db
